@@ -1,0 +1,92 @@
+Implement a class Complex which represents the Complex Number.
+Implement the following functions Using Operator Overloading:
+1. Constructors ( Include all constructor types)
+2. Overload operator + to add two complex numbers using member function
+3. Overload operator * to multiply two complex numbers using friend function
+4. Overload operators << and >> to output and accept Complex Numbers*/
+
+
+#include<iostream>
+using namespace std;
+class complex{
+private:
+	float real;
+	float img;
+public:	
+	//Default Constructor
+	complex(){
+		 real = 0;
+		 img = 0;
+		cout<<"\n[Default constructor called]"<<endl;
+	}
+	//Parameterized Constructor
+	complex(float r, float i){
+		real = r;
+		img = i;
+		cout<<"\n[parameterized constructor called]";
+	}
+	//Copy Constructor
+	complex(complex &c){
+		real = c.real;
+		img = c.img;
+		cout<<"\n[Copy constructor called]"<<endl;
+	}
+	
+	//Overload + operator (member function)
+	complex operator + (complex c){
+		complex temp;
+		temp.real= real + c.real;
+		temp.img= img + c.img;
+		return temp;
+	}
+
+
+	//Overload * operator (friend function)
+	friend complex operator*(complex c1, complex c2){
+		complex temp;
+		temp.real = (c1.real*c2.real) - (c1.img*c2.img);
+		temp.img = (c1.real*c2.img) + (c1.img*c2.real);
+		return temp;
+	}
+
+
+	// Overload >> operator (input)
+    friend istream& operator >> (istream &in, complex &c){
+        cout<<"Enter real part: ";
+        in>>c.real;
+        cout<<"Enter imaginary part: ";
+        in>>c.img;
+        return in;
+    }
+
+
+    // Overload << operator (output)
+    friend ostream& operator<<(ostream &out, const complex &c){
+        out<<c.real<<" + "<<c.img<<"i";
+        return out;
+    }
+};
+
+
+int main(){
+    complex c1, c2, sum, product;
+    cout<<"Enter first complex number:"<<endl;
+    cin>>c1;
+    cout<<"Enter second complex number:"<<endl;
+    cin>>c2;
+    sum=c1 + c2;
+    product=c1 * c2;
+    cout<<"\nFirst number: "<<c1;
+    cout<<"\nSecond number: "<<c2;
+    cout<<"\nSum: "<<sum;
+    cout<<"\nProduct: "<<product<<endl;
+    return 0;
+}
+
+
+
+
+
+
+
+
