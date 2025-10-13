@@ -1,0 +1,48 @@
+/*Problem Statement
+Exception Handling:
+Design a program with the following functionalities:
+1. A function to read two numbers(Double type)
+2. A function to calculate division of these two numbers
+3. A try block to detect and throw an exception when divide by zero condition occurs
+4. Appropriate catch block to handle the exception thrown*/
+
+#include <iostream>
+using namespace std;
+class Division{
+public:
+    double x, y;
+    void getdata(){
+    cout<<"Enter the numerator (x): ";
+    cin>>x;
+    cout << "Enter the denominator (y): ";
+    cin >> y;
+    }
+    void divide() {
+        try{
+           if(y == 0){
+            throw(y); //Throw y if denominator is zero
+        }else{
+            cout<<"Division of both numbers is: "<< x / y <<endl;
+           }
+        }
+        catch(double) {
+            cout<<"Exception caught: Division by zero not allowed!"<<endl;
+        }
+    }
+};
+int main(){
+    char choice;
+    do{
+		Division div;
+        div.getdata();
+        div.divide();
+        cout<<"\nDo you want to perform another division? (y/n): ";
+        cin>>choice;
+
+
+    }while(choice == 'y' || choice == 'Y');
+    cout<<"Program terminated." << endl;
+    return 0;
+}
+
+
