@@ -1,0 +1,57 @@
+Array operations (with Template library):
+Design a program with a template for sorting the accepted
+array and displaying it using integer or float type data. Implement any sorting type
+using Generic Programming..*/
+
+#include <iostream>
+using namespace std;
+template<typename T>
+void selectionSort( T arr[], int n){
+	for(int i=0; i<n-1; i++){
+		int minIndex=i;
+		for(int j=i+1; j<n; j++){
+			if(arr[j]<arr[minIndex]){
+				minIndex=j;
+			} }
+		if(minIndex!=i){
+			T temp=arr[i];
+			arr[i]=arr[minIndex];
+			arr[minIndex]=temp;
+		} } }
+template<typename T>
+void display( T arr[], int n){
+	for(int i=0; i<n; i++){
+		cout<<arr[i]<<" ";
+	} cout<<endl; }
+int main(){
+	int n1;
+	cout<<"Enter number of integers: ";
+	cin>>n1;
+	int* intArr=new int[n1];
+	cout<<"Enter "<<n1<<" integers: ";
+	for(int i=0; i<n1; i++){
+		cin>>intArr[i];
+	}
+	cout<<"\Original integer array: ";
+	display(intArr, n1);
+	selectionSort(intArr, n1);
+	cout<<"Sorted integer array: ";
+	display(intArr, n1);
+	int n2;
+	cout<<"\n------------------------\n";
+	cout<<"\nEnter number of floats: ";
+	cin>>n2;
+	float* floatArr=new float[n2];
+	cout<<"Enter "<<n2<<" float values: ";
+	for(int i=0; i<n2; i++){
+		cin>>floatArr[i];
+	}
+	cout<<"\Original float array: ";
+	display(floatArr, n2);
+	selectionSort(floatArr, n2);
+	cout<<"Sorted float array: ";
+	display(floatArr, n2);
+	delete[] intArr;
+	delete[] floatArr;
+	return 0;
+}
