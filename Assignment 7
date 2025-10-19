@@ -1,0 +1,55 @@
+/*Sequential Files Operations
+Develop a system that defines inventory class with suitable
+data members and member functions. Perform read and write operations using class
+objects.*/
+
+#include<iostream> 
+#include<fstream> 
+#include<string> 
+using namespace std; 
+class inventory{ 
+    string name; 
+    int id,  qty, price; 
+public: 
+    void accept(); 
+    void display(int index);
+}; 
+void inventory::accept(){ 
+    cout<<"Name: "; 
+    cin>>name; 
+    cout<<"ID: "; 
+    cin>>id; 
+    cout<<"Quantity: "; 
+    cin>>qty; 
+    cout<<"Price: "; 
+    cin>>price; 
+} 
+void inventory::display(int index){ 
+    cout<<"\n--- Item "<<index+1<< " ---" << endl;
+    cout<<"Name     : "<<name<<endl; 
+    cout<<"ID       : "<<id<<endl; 
+    cout<<"Quantity : "<<qty<<endl; 
+    cout<<"Price    : "<<price<<endl; 
+} 
+int main(){ 
+    int n; 
+    cout<<"Enter Number of Objects: "; 
+    cin>>n; 
+    inventory obj[n]; 
+    fstream file("invy.txt", ios::in | ios::out | ios::trunc | ios::binary); 
+    cout<<"\nEnter Details of Materials:\n"; 
+    for(int i=0; i<n; i++){ 
+        cout<<"\n--- Enter Item "<<i+1<<" ---"<<endl;
+        obj[i].accept(); 
+        file.write((char*)&obj[i], sizeof(obj[i])); 
+    } 
+    file.seekg(0); 
+    cout<<"\n=========== Inventory File Records ==========="<<endl; 
+    for(int i=0; i<n; i++){
+        file.read((char*)&obj[i], sizeof(obj[i])); 
+        obj[i].display(i); 
+    } 
+    cout<<"============================================="<<endl;
+    file.close(); 
+    return 0; 
+} 
