@@ -1,0 +1,312 @@
+/*Mini-Project Idea: To create a simple console-based application that allows users to book movie tickets, view seat layouts, and store booking details using Object-Oriented Programming principles in C++.*/
+
+#include <bits/stdc++.h>
+#include <iostream>
+#include <fstream>     // 🔹 for file handling (ofstream)
+#include <cctype>
+#include <stdexcept>
+using namespace std;
+
+// ==================== BASE CLASS ====================
+class movies {
+protected:
+    int i, j;
+    int t;
+    int time;
+    float price;
+    char seats[10][10];
+
+public:
+    int no_seats;
+
+    movies() {
+        // initialize all seats to empty ('0' means available)
+        for (i = 0; i < 10; i++)
+            for (j = 0; j < 10; j++)
+                seats[i][j] = '0';
+
+        t = 0;
+        time = 0;
+        price = 200;
+        no_seats = 0;
+        cout << "(Seat layout initialized)\n";
+    }
+
+    void accept() {
+        cout << "Enter number of seats: ";
+        cin >> no_seats;
+        try {
+            if (no_seats <= 10)
+                cout << "...." << endl;
+            else
+                throw(no_seats);
+        } catch (int no_seats) {
+            cout << " Number of seats are greater than 10. You can book at most 10 tickets.\n";
+            exit(0);
+        }
+    }
+
+    virtual void info() = 0; // pure virtual function
+
+    void seat() {
+        cout << "\nSeats layout :\n   ";
+        for (j = 0; j < 10; j++) cout << j + 1 << "\t";
+        cout << "\n";
+        for (i = 0; i < 10; i++) {
+            cout << char('A' + i) << "  ";
+            for (j = 0; j < 10; j++) cout << seats[i][j] << "\t";
+            cout << "\n";
+        }
+    }
+
+    void display() {
+        cout << "Available timings are: 10AM, 1PM, 4PM, 7PM\n";
+        t = no_seats * price;
+        cout << "Price for " << no_seats << " seats is: " << t << endl;
+    }
+
+    inline void next() { cout << "--------------------------" << endl; }
+
+    // ==========================================================
+    // 🔹 FILE HANDLING FUNCTION (stores booking info to file)
+    // ==========================================================
+    void saveToFile(const string &movieName) {
+        ofstream file("booking_data.txt", ios::app); // open in append mode
+        if (!file) { // check if file opened successfully
+            cout << "Error opening file!\n";
+            return;
+        }
+
+        // Write booking details into file
+        file << "============================\n";
+        file << "Movie: " << movieName << "\n";
+        file << "Seats booked: " << no_seats << "\n";
+        file << "Total price: " << t << "\n";
+        file << "Seat layout (X = booked):\n";
+
+        // Save seat layout to file
+        for (i = 0; i < 10; i++) {
+            file << char('A' + i) << "  ";
+            for (j = 0; j < 10; j++)
+                file << seats[i][j] << "\t";
+            file << "\n";
+        }
+
+        file << "============================\n\n";
+        file.close(); // close file after writing
+        cout << "Booking details saved to file successfully!\n";
+    }
+};
+
+// ==================== DERIVED CLASS 1 ====================
+class Thamma : public movies {
+public:
+    void info() {
+        cout << "Genre: Comedy, Horror, Romantic\nThamma is a supernatural horror-comedy centred on Alok and Tadaka, whose forbidden romance collides with ancient forces.\n";
+    }
+
+    // 🔹 Template + Exception Handling for already booked seat
+    template <typename T1, typename T2>
+    void disp(T1 row, T2 col) {
+        int r = toupper(row) - 'A';
+        int c = col - 1;
+        try {
+            if (seats[r][c] == 'X')
+                throw runtime_error("Seat already booked!");
+            if (r >= 0 && r < 10 && c >= 0 && c < 10)
+                seats[r][c] = 'X';
+            cout << "Seat " << row << col << " booked successfully.\n";
+        } catch (runtime_error &e) {
+            cout  << e.what() << " Choose another seat.\n";
+        }
+        next();
+    }
+};
+
+// ==================== DERIVED CLASS 2 ====================
+class Kantara : public movies {
+public:
+    void info() {
+        cout << "Genre: Adventure, Drama, Thriller\nThe divine forest whispers... a legend was born!\n";
+    }
+
+    template <typename T1, typename T2>
+    void disp(T1 row, T2 col) {
+        int r = toupper(row) - 'A';
+        int c = col - 1;
+        try {
+            if (seats[r][c] == 'X')
+                throw runtime_error("Seat already booked!");
+            if (r >= 0 && r < 10 && c >= 0 && c < 10)
+                seats[r][c] = 'X';
+            cout << "Seat " << row << col << " booked successfully.\n";
+        } catch (runtime_error &e) {
+            cout  << e.what() << " Choose another seat.\n";
+        }
+        next();
+    }
+};
+
+// ==================== DERIVED CLASS 3 ====================
+class saiyaara : public movies {
+public:
+    void info() {
+        cout << "\nGenre: Romance\nPassionate lovers navigate euphoric highs and crushing lows while clinging to their tumultuous bond.\n";
+    }
+
+    template <typename T1, typename T2>
+    void disp(T1 row, T2 col) {
+        int r = toupper(row) - 'A';
+        int c = col - 1;
+        try {
+            if (seats[r][c] == 'X')
+                throw runtime_error("Seat already booked!");
+            if (r >= 0 && r < 10 && c >= 0 && c < 10)
+                seats[r][c] = 'X';
+            cout << "Seat " << row << col << " booked successfully.\n";
+        } catch (runtime_error &e) {
+            cout  << e.what() << " Choose another seat.\n";
+        }
+        next();
+    }
+};
+
+// ==================== DERIVED CLASS 4 ====================
+class Ek : public movies {
+public:
+    void info() {
+        cout << "\nGenre: Romance, Action\nLove. Obsession. Heartbreak...\n";
+    }
+
+    template <typename T1, typename T2>
+    void disp(T1 row, T2 col) {
+        int r = toupper(row) - 'A';
+        int c = col - 1;
+        try {
+            if (seats[r][c] == 'X')
+                throw runtime_error("Seat already booked!");
+            if (r >= 0 && r < 10 && c >= 0 && c < 10)
+                seats[r][c] = 'X';
+            cout << "Seat " << row << col << " booked successfully.\n";
+        } catch (runtime_error &e) {
+            cout  << e.what() << " Choose another seat.\n";
+        }
+        next();
+    }
+};
+
+// ==================== MAIN FUNCTION ====================
+int main() {
+    int c;
+    char ch;
+    do {
+        cout << "----WELCOME TO ONLINE BOOKING SYSTEM----" << endl;
+        cout << "1. Thamma\n2. Kantara: Chapter 1\n3. Saiyaara\n4. Ek\n5. EXIT\n";
+        cout << "Enter the choice: ";
+        cin >> c;
+        int w;
+        char v;
+
+        switch (c) {
+            case 1: {
+                Thamma u;
+                u.info();
+                u.accept();
+                u.display();
+
+                for (int i = 0; i < u.no_seats; i++) {
+                    cout << "Enter row (A–J): ";
+                    cin >> v;
+                    cout << "Enter column (1–10): ";
+                    cin >> w;
+                    u.disp(v, w);
+                }
+
+                u.seat();
+
+                // 🔹 File handling: save booking to file
+                u.saveToFile("Thamma");
+                break;
+            }
+
+            case 2: {
+                Kantara o;
+                o.info();
+                o.accept();
+                o.display();
+
+                for (int i = 0; i < o.no_seats; i++) {
+                    cout << "Enter row (A–J): ";
+                    cin >> v;
+                    cout << "Enter column (1–10): ";
+                    cin >> w;
+                    o.disp(v, w);
+                }
+
+                o.seat();
+
+                // 🔹 File handling: save booking to file
+                o.saveToFile("Kantara: Chapter 1");
+                break;
+            }
+
+            case 3: {
+                saiyaara s;
+                s.info();
+                s.accept();
+                s.display();
+
+                for (int i = 0; i < s.no_seats; i++) {
+                    cout << "Enter row (A–J): ";
+                    cin >> v;
+                    cout << "Enter column (1–10): ";
+                    cin >> w;
+                    s.disp(v, w);
+                }
+
+                s.seat();
+
+                // 🔹 File handling: save booking to file
+                s.saveToFile("Saiyaara");
+                break;
+            }
+
+            case 4: {
+                Ek e;
+                e.info();
+                e.accept();
+                e.display();
+
+                for (int i = 0; i < e.no_seats; i++) {
+                    cout << "Enter row (A–J): ";
+                    cin >> v;
+                    cout << "Enter column (1–10): ";
+                    cin >> w;
+                    e.disp(v, w);
+                }
+
+                e.seat();
+
+                // 🔹 File handling: save booking to file
+                e.saveToFile("Ek");
+                break;
+            }
+
+            case 5: {
+                cout << "Thank you for using the booking system!\n";
+                return 0;
+            }
+
+            default:
+                cout << "Invalid choice! Please try again.\n";
+        }
+
+        cout << "\nDo you want to continue? (Y/N): ";
+        cin >> ch;
+
+    } while (toupper(ch) == 'Y');
+
+    cout << "Hope you enjoy! Have a nice day!\n";
+    return 0;
+}
+
